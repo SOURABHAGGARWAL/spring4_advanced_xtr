@@ -9,6 +9,9 @@ import javax.jms.Session;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jms.annotation.EnableJms;
@@ -20,6 +23,7 @@ import org.springframework.util.FileSystemUtils;
 
 @EnableJms
 @SpringBootApplication
+@EnableCaching
 public class Spring4AdvancedApplication {
 
 	@Bean //Strictly speaking this bean is not necessary as boot creates a default
@@ -34,6 +38,11 @@ public class Spring4AdvancedApplication {
     	
     	Spring4AdvancedApplication spring4AdvancedApplication = new Spring4AdvancedApplication();
     	spring4AdvancedApplication.sendMessage(context);
+    }
+    
+	@Bean
+    public CacheManager cacheManager() {
+        return new ConcurrentMapCacheManager("Employees");
     }
     
 	public void sendMessage(ConfigurableApplicationContext context){
